@@ -1,0 +1,27 @@
+{
+  "name": "@my-org/maths",
+  "version": "0.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^20.14.12",
+    "vite": "catalog:vite5",
+    "typescript": "catalog:typescript5"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/my-lib.js",
+      "require": "./dist/my-lib.cjs"
+    }
+  },
+  "main": "./dist/my-lib.cjs",
+  "module": "./dist/my-lib.js"
+}

@@ -1,0 +1,9 @@
+packages:
+  - 'packages/**'
+  - 'apps/**'
+
+catalogs:
+  vite5:
+    vite: ^5.3.4
+  typescript5:
+    typescript: 5.5.4
