@@ -12,8 +12,10 @@
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
+  "bumpVersionsWithWorkspaceProtocolOnly": true,
   "snapshot": {
-    "useCalculatedVersion": true
+    "useCalculatedVersion": true,
+    "prereleaseTemplate": "{tag}"
   },
   "ignore": []
 }

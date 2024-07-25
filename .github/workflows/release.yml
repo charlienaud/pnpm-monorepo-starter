@@ -32,6 +32,9 @@ jobs:
         name: Create .npmrc
         run: |
           cat << EOF > "$HOME/.npmrc"
+            registry=https://registry.npmjs.org/
+
+            @charlienaud:registry=https://npm.pkg.github.com
             //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
           EOF
         env:

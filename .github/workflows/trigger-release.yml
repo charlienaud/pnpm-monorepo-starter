@@ -11,7 +11,7 @@ on:
         options:
           - snapshot
   schedule:
-    - cron: "0 * * * 1-5"
+    - cron: "*/30 * * * 1-5"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -63,10 +63,20 @@ jobs:
         name: Build packages
         run: pnpm -r run build
       - 
-        name: 🚀 Create and publish versions
+        name: 🚀 Create and publish nightly versions
+        if: "${{ github.event.inputs.version == '' }}"
         uses: changesets/action@v1
         with:
-          publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'nightly' }}
+          publish: pnpm changeset publish --no-git-tags --snapshot --tag nightly
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - 
+        name: 🚀 Create and publish manuel versions
+        if: "${{ github.event.inputs.version != '' }}"
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version }} --snapshot-prerelease-template "nightly"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
