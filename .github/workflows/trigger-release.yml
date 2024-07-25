@@ -1,0 +1,72 @@
+name: Trigger release and publish packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: choice
+        default: snapshot
+        description: What tag do you want to release?
+        required: true
+        options:
+          - snapshot
+  schedule:
+    - cron: "15 16 * * 1-5"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Trigger Preview Release
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout Repo
+        uses: actions/checkout@v4
+      - 
+        name: Setup pnpm 9.5.0
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.5.0
+      - 
+        name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+          registry-url: 'https://npm.pkg.github.com'
+      - 
+        name: Create .npmrc
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            registry=https://registry.npmjs.org/
+
+            @charlienaud:registry=https://npm.pkg.github.com
+            //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
+          EOF
+        env:
+          # Because we're publishing to Github we can use secrets.GITHUB_TOKEN for our NPM_TOKEN
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - 
+        name: Install Dependencies
+        run: pnpm install
+      - 
+        name: Version packages
+        run: pnpm changeset version --snapshot ${{ github.event.inputs.version || 'nightly' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - 
+        name: Install Dependencies
+        run: pnpm install
+      - 
+        name: Build packages
+        run: pnpm -r run build
+      - 
+        name: 🚀 Create and publish versions
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'nightly' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
