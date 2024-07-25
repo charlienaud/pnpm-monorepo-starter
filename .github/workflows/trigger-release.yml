@@ -68,6 +68,7 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: pnpm changeset publish --no-git-tags --snapshot --tag nightly
+          createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,6 +78,7 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version }}"
+          createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
