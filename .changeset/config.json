@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "yoozio-dev/flowkiwi-js"
+      "repo": "charlienaud/pnpm-monorepo-starter"
     }
   ],
   "commit": false,

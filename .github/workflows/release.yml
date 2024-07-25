@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+
+jobs:
+  release:
+    name: Version packages pull request
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout Repo
+        uses: actions/checkout@v4
+      - 
+        name: Setup pnpm 9.5.0
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.5.0
+      - 
+        name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - 
+        name: Create .npmrc
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
+          EOF
+        env:
+          # Because we're publishing to Github we can use secrets.GITHUB_TOKEN for our NPM_TOKEN
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - 
+        name: Install Dependencies
+        run: pnpm install
+      - 
+        name: Build packages
+        run: pnpm -r run build
+      - 
+        name: Create Release Pull Request
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
