@@ -1,5 +1,8 @@
-import { sum } from '@/arithmetic/index';
+import { sum, divide } from '@/arithmetic/index';
 
 console.log('Hello, World!');
 
-export { sum };
+export {
+  sum,
+  divide,
+}
