@@ -1,4 +1,4 @@
-name: Trigger release and publish packages
+name: Trigger pre-release and pre-publish packages
 
 on:
   workflow_dispatch:
@@ -77,7 +77,7 @@ jobs:
         if: "${{ github.event.inputs.version != '' }}"
         uses: changesets/action@v1
         with:
-          publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version }}"
+          publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version }}
           createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
