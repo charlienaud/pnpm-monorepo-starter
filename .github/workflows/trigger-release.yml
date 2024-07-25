@@ -17,26 +17,27 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  check_changes:
-    name: Check if there are changes
+  check_commits:
+    name: Check commits
     runs-on: ubuntu-latest
     outputs:
-      COMMIT_COUNT: ${{ steps.check_changes.outputs.COMMIT8COUNT }}
+      NEED_RELEASE: ${{ steps.check_commits.outputs.COMMIT_COUNT > 10 || github.event.inputs.version == 'snapshot' }}
     steps:
       - 
         name: Checkout Repo
         uses: actions/checkout@v4
       -
         name: Check if there are changes
-        id: check_changes
+        id: check_commits
         run: |
           echo "COMMIT_COUNT=$(git rev-list --branches main --max-age $(date +%s -d '24 hours ago') --count -- .changeset/)" >> $GITHUB_OUTPUT
+  
   release:
-    name: Trigger Preview Release
+    name: Publish pre-release packages
     runs-on: ubuntu-latest
     needs: 
-      - check_changes
-    if: ${{ needs.check_changes.outputs.COMMIT_COUNT > 10 }}
+      - check_commits
+    if: ${{ needs.check_commits.outputs.NEED_RELEASE == 'true' }}
     steps:
       - 
         name: Checkout Repo
@@ -88,12 +89,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
   no_release:
-    name: No release
+    name: Nothing to release
     runs-on: ubuntu-latest
     needs: 
-      - check_changes
-    if: ${{ needs.check_changes.outputs.COMMIT_COUNT <= 10 }}
+      - check_commits
+    if: ${{ needs.check_commits.outputs.NEED_RELEASE == 'false' }}
     steps:
       - 
         name: Checkout Repo
