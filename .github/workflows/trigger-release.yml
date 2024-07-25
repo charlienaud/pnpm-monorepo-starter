@@ -76,7 +76,7 @@ jobs:
         if: "${{ github.event.inputs.version != '' }}"
         uses: changesets/action@v1
         with:
-          publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version }} --snapshot-prerelease-template "nightly"
+          publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
