@@ -63,22 +63,11 @@ jobs:
         name: Build packages
         run: pnpm -r run build
       - 
-        name: 🚀 Create and publish nightly versions
-        if: "${{ github.event.inputs.version == '' }}"
+        name: 🚀 Create and publish versions
         uses: changesets/action@v1
         with:
-          publish: pnpm changeset publish --no-git-tags --snapshot --tag nightly
+          publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'nightly' }}
           createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - 
-        name: 🚀 Create and publish manuel versions
-        if: "${{ github.event.inputs.version != '' }}"
-        uses: changesets/action@v1
-        with:
-          publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version }}
-          createGithubReleases: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}      

@@ -14,8 +14,7 @@
   "updateInternalDependencies": "patch",
   "bumpVersionsWithWorkspaceProtocolOnly": true,
   "snapshot": {
-    "useCalculatedVersion": true,
-    "prereleaseTemplate": "{tag}"
+    "useCalculatedVersion": true
   },
   "ignore": []
 }
