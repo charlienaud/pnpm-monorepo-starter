@@ -6,7 +6,7 @@
     "format": "prettier",
     "format:check": "pnpm format --check --debug-check",
     "format:fix": "pnpm format --write",
-    "lint": "eslint --ext mjs,js,ts,tsx",
+    "lint": "eslint --ext cjs,mjs,js,ts,tsx",
     "lint:fix": "pnpm lint --fix",
     "fix": "pnpm lint:fix . && pnpm format:fix .",
     "release": "pnpm -r run build && changeset publish",
