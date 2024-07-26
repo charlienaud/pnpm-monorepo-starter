@@ -11,7 +11,7 @@ on:
         options:
           - snapshot
   schedule:
-    - cron: "0 1 * * 1-5"
+    - cron: '0 1 * * 1-5'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,39 +23,33 @@ jobs:
     outputs:
       NEED_RELEASE: ${{ steps.check_commits.outputs.COMMIT_COUNT > 0 || github.event.inputs.version == 'snapshot' }}
     steps:
-      - 
-        name: Checkout Repo
+      - name: Checkout Repo
         uses: actions/checkout@v4
-      -
-        name: Check if there are changes
+      - name: Check if there are changes
         id: check_commits
         run: |
           echo "COMMIT_COUNT=$(git rev-list --branches main --max-age $(date +%s -d '24 hours ago') --count -- .changeset/)" >> $GITHUB_OUTPUT
-  
+
   release:
     name: Publish pre-release packages
     runs-on: ubuntu-latest
-    needs: 
+    needs:
       - check_commits
     if: ${{ needs.check_commits.outputs.NEED_RELEASE == 'true' }}
     steps:
-      - 
-        name: Checkout Repo
+      - name: Checkout Repo
         uses: actions/checkout@v4
-      - 
-        name: Setup pnpm 9.5.0
+      - name: Setup pnpm 9.5.0
         uses: pnpm/action-setup@v4
         with:
           version: 9.5.0
-      - 
-        name: Setup Node.js 22
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'pnpm'
           registry-url: 'https://npm.pkg.github.com'
-      - 
-        name: Create .npmrc
+      - name: Create .npmrc
         run: |
           cat << EOF > "$HOME/.npmrc"
             registry=https://registry.npmjs.org/
@@ -66,22 +60,17 @@ jobs:
         env:
           # Because we're publishing to Github we can use secrets.GITHUB_TOKEN for our NPM_TOKEN
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - 
-        name: Install Dependencies
+      - name: Install Dependencies
         run: pnpm install
-      - 
-        name: Version packages
+      - name: Version packages
         run: pnpm changeset version --snapshot ${{ github.event.inputs.version || 'nightly' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - 
-        name: Install Dependencies
+      - name: Install Dependencies
         run: pnpm install
-      - 
-        name: Build packages
+      - name: Build packages
         run: pnpm -r run build
-      - 
-        name: 🚀 Create and publish versions
+      - name: 🚀 Create and publish versions
         uses: changesets/action@v1
         with:
           publish: pnpm changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'nightly' }}
@@ -89,16 +78,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
   no_release:
     name: Nothing to release
     runs-on: ubuntu-latest
-    needs: 
+    needs:
       - check_commits
     if: ${{ needs.check_commits.outputs.NEED_RELEASE == 'false' }}
     steps:
-      - 
-        name: Checkout Repo
-        run : |
+      - name: Checkout Repo
+        run: |
           echo "No changes detected inside .changeset/ folder"
           echo "Skipping release"

@@ -1,5 +1,5 @@
 ---
-"@charlienaud/maths": patch
+'@charlienaud/maths': patch
 ---
 
 First release

@@ -2,9 +2,21 @@
   "name:": "root",
   "private": true,
   "repository": "https://github.com/charlienaud/pnpm-monorepo-starter",
+  "scripts": {
+    "format": "prettier",
+    "format:check": "pnpm format --check --debug-check",
+    "format:fix": "pnpm format --write",
+    "lint": "eslint --ext mjs,js,ts,tsx",
+    "lint:fix": "pnpm lint --fix",
+    "fix": "pnpm lint:fix . && pnpm format:fix ."
+  },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
-    "@changesets/cli": "^2.27.7"
+    "@changesets/cli": "^2.27.7",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/parser": "^7.17.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
   },
   "packageManager": "pnpm@9.5.0",
   "publishConfig": {
