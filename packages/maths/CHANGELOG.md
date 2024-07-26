@@ -1,5 +1,11 @@
 # @charlienaud/maths
 
+## 0.0.2
+
+### Patch Changes
+
+- [#2](https://github.com/charlienaud/pnpm-monorepo-starter/pull/2) [`bcb68d9`](https://github.com/charlienaud/pnpm-monorepo-starter/commit/bcb68d9fc99734f8e7463fe1f32c59fcd23642aa) Thanks [@charlienaud](https://github.com/charlienaud)! - New divide method
+
 ## 0.0.1
 
 ### Patch Changes
