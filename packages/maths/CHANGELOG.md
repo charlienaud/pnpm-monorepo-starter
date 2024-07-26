@@ -1,5 +1,13 @@
 # @charlienaud/maths
 
+## 0.0.4
+
+### Patch Changes
+
+- [#8](https://github.com/charlienaud/pnpm-monorepo-starter/pull/8) [`340ca8f`](https://github.com/charlienaud/pnpm-monorepo-starter/commit/340ca8ff5f91d3908451bf851d8608f359952674) Thanks [@charlienaud](https://github.com/charlienaud)! - Fix missing export
+
+- [#6](https://github.com/charlienaud/pnpm-monorepo-starter/pull/6) [`4d38fbf`](https://github.com/charlienaud/pnpm-monorepo-starter/commit/4d38fbf2b90b40da60ff6b843af59f6b1bdbd5e5) Thanks [@charlienaud](https://github.com/charlienaud)! - Add substract method
+
 ## 0.0.3
 
 ### Patch Changes
