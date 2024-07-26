@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '.changeset/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
