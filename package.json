@@ -9,7 +9,7 @@
     "lint": "eslint --ext mjs,js,ts,tsx",
     "lint:fix": "pnpm lint --fix",
     "fix": "pnpm lint:fix . && pnpm format:fix .",
-    "release": "changeset publish",
+    "release": "pnpm -r run build && changeset publish",
     "version": "changeset version && pnpm install"
   },
   "devDependencies": {
