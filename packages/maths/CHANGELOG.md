@@ -1,5 +1,11 @@
 # @charlienaud/maths
 
+## 0.0.3
+
+### Patch Changes
+
+- [#4](https://github.com/charlienaud/pnpm-monorepo-starter/pull/4) [`3fc0c9a`](https://github.com/charlienaud/pnpm-monorepo-starter/commit/3fc0c9a78c0a8560353ab0af487ce6375c8ed10c) Thanks [@charlienaud](https://github.com/charlienaud)! - New multiply method
+
 ## 0.0.2
 
 ### Patch Changes
